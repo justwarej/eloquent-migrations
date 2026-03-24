@@ -1,28 +1,30 @@
 {
-    "name": "hyde1/eloquent-migrations",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Marc Legay",
-            "email": "marc@ru3.com"
-        }
-    ],
-    "require": {
-        "php": ">=8.4",
-        "symfony/console": "^7.4",
-        "illuminate/database": "^12.0",
-		"illuminate/console": "^12.0",
-		"illuminate/filesystem": "^12.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"Hyde1\\EloquentMigrations\\": "src/"
-		},
-		"files": [
-			"src/helpers.php"
-		]
-	},
-	"bin": ["bin/elmigrator"],
-	"description": "Use Eloquent migration system without Laravel"
+  "name": "hyde1/eloquent-migrations",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marc Legay",
+      "email": "marc@ru3.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.3",
+    "symfony/console": "^5.4",
+    "illuminate/database": "^8.0",
+    "illuminate/console": "^8.0",
+    "illuminate/filesystem": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hyde1\\EloquentMigrations\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "bin": [
+    "bin/elmigrator"
+  ],
+  "description": "Use Eloquent migration system without Laravel"
 }
