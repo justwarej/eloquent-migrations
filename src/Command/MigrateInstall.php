@@ -11,6 +11,7 @@ class MigrateInstall extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('migrate:install')
             ->setDescription('Create the migration repository')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production')
             ->setHelp('Create the migration repository' . PHP_EOL);

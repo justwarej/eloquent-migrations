@@ -24,6 +24,7 @@ class Migrate extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('migrate')
             ->setDescription('Run migrations')
             ->addOption('dry-run', 'x', InputOption::VALUE_NONE, 'Dump query to standard output instead of executing it')
             ->addOption('step', 's', InputOption::VALUE_REQUIRED, 'Force the migrations to be run so they can be rolled back individually', 1)

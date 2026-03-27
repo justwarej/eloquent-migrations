@@ -27,6 +27,7 @@ class Rollback extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('rollback')
             ->setDescription('Rollback migrations')
             ->addOption('dry-run', 'x', InputOption::VALUE_NONE, 'Dump query to standard output instead of executing it')
             ->addOption('step', 's', InputOption::VALUE_REQUIRED, 'Number of migrations to rollback', 0)

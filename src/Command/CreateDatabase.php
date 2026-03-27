@@ -10,6 +10,7 @@ class CreateDatabase extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('create:database')
             ->setDescription('Create a database')
             ->addArgument('name', InputArgument::REQUIRED, 'The database name')
             ->setHelp('Creates a database' . PHP_EOL);

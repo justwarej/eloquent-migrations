@@ -14,6 +14,7 @@ class Init extends Command
     protected function configure()
     {
         $this
+            ->setName('init')
             ->setDescription('Initialize the project')
             ->addArgument('path', InputArgument::REQUIRED, 'The path for the root directory of the project.')
             ->setHelp('Initialize the project for Eloquent Migrations' . PHP_EOL);

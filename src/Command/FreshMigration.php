@@ -10,6 +10,7 @@ class FreshMigration extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('migrate:fresh')
             ->setDescription('Drop all tables and re-run all migrations')
             ->addOption('drop-views', null, InputOption::VALUE_NONE, 'Drop all tables and views')
             ->addOption('drop-types', null, InputOption::VALUE_NONE, 'Drop all tables and types (Postgres only)')

@@ -23,6 +23,7 @@ class Status extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('status')
             ->setDescription('Display migration status')
             ->setHelp('Show the status of each migration' . PHP_EOL);
 

@@ -14,6 +14,7 @@ class RunSeed extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('seed:run')
             ->setDescription('Run seed')
             ->addOption('--seed', '-s', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'What is the name of the seeder?')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production')

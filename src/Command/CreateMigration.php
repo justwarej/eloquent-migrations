@@ -20,6 +20,7 @@ class CreateMigration extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('create')
             ->setDescription('Create a new migration')
             ->addArgument('name', InputArgument::REQUIRED, 'The migration name')
             ->addOption('--create', null, InputOption::VALUE_REQUIRED, 'The table to create')

@@ -16,6 +16,7 @@ class CreateSeed extends AbstractCommand
     protected function configure()
     {
         $this
+            ->setName('seed:create')
             ->setDescription('Create a new seeder class')
             ->addArgument('name', InputArgument::REQUIRED, 'The seeder name')
             ->setHelp('Create a new seeder class' . PHP_EOL);
