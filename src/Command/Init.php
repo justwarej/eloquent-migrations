@@ -1,4 +1,5 @@
 <?php
+
 namespace Hyde1\EloquentMigrations\Command;
 
 use InvalidArgumentException;
@@ -35,14 +36,14 @@ class Init extends Command
             return $path;
         }
 
-        if (! is_dir($path) && ! mkdir($path)) {
+        if (!is_dir($path) && !mkdir($path)) {
             throw new InvalidArgumentException(sprintf(
                 'Cannot create `%s` directory',
                 $path
             ));
         }
 
-        if (! is_writable($path) || is_file($path)) {
+        if (!is_writable($path) || is_file($path)) {
             throw new InvalidArgumentException(sprintf(
                 'The directory `%s` is not writable',
                 $path
@@ -56,14 +57,14 @@ class Init extends Command
     protected function createConfig(string $path, OutputInterface $output)
     {
         $configfile = 'elmigrator.php';
-        $contents   = file_get_Contents(__DIR__ . '/../../data/' . $configfile . '.dist');
+        $contents = file_get_Contents(__DIR__ . '/../../data/' . $configfile . '.dist');
 
         if ($contents === false) {
             throw new RuntimeException('Could not find template for config file');
         }
 
         $outputPath = $path . DIRECTORY_SEPARATOR . $configfile;
-        $ret        = file_put_contents($outputPath, $contents);
+        $ret = file_put_contents($outputPath, $contents);
         if ($ret === false) {
             throw new RuntimeException(sprintf(
                 'The config file `%s` could not be written',
@@ -87,7 +88,7 @@ class Init extends Command
         $contents = str_replace("__DIR__ . '/../", "'vendor/hyde1/eloquent-migrations/", $contents);
 
         $outputPathBinFile = getcwd() . DIRECTORY_SEPARATOR . 'migrator';
-        $ret               = file_put_contents($outputPathBinFile, $contents);
+        $ret = file_put_contents($outputPathBinFile, $contents);
 
         if ($ret === false) {
             throw new RuntimeException(sprintf(
