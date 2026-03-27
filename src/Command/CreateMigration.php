@@ -2,6 +2,7 @@
 namespace Hyde1\EloquentMigrations\Command;
 
 use Illuminate\Database\Console\Migrations\TableGuesser;
+use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;

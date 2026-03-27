@@ -1,6 +1,7 @@
 <?php
 namespace Hyde1\EloquentMigrations\Command;
 
+use Closure;
 use Illuminate\Database\DatabaseManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
