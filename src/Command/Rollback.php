@@ -1,19 +1,13 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Hyde1\EloquentMigrations\Migrations\Migrator;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Composer;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('rollback')]
 class Rollback extends AbstractCommand
 {
     /**
@@ -46,7 +40,7 @@ class Rollback extends AbstractCommand
     {
         $this->bootstrap($input, $output);
         $this->repository = new DatabaseMigrationRepository($this->getDb(), $this->getMigrationTable());
-        $this->migrator = new Migrator($this->repository, $this->getDb(), new Filesystem());
+        $this->migrator   = new Migrator($this->repository, $this->getDb(), new Filesystem());
         $this->migrator->setOutput($output);
 
         $this->migrator->usingConnection($this->database, function () use ($output, $input) {
@@ -55,8 +49,8 @@ class Rollback extends AbstractCommand
                 ->rollback(
                     [$this->getMigrationPath()],
                     [
-                        'pretend' => $this->input->getOption('dry-run'),
-                        'step' => (int)$this->input->getOption('step'),
+                        'pretend'   => $this->input->getOption('dry-run'),
+                        'step'      => (int) $this->input->getOption('step'),
                         'migration' => $this->input->getOption('migration'),
                     ],
                 );

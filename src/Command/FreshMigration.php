@@ -1,19 +1,10 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Hyde1\EloquentMigrations\Migrations\Migrator;
-use Illuminate\Database\Migrations\DatabaseMigrationRepository;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Composer;
+use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('migrate:fresh')]
 class FreshMigration extends AbstractCommand
 {
     protected function configure()
@@ -53,14 +44,14 @@ class FreshMigration extends AbstractCommand
 
         $this->call('migrate', array_filter([
             '--database' => $this->database,
-            '--force' => true,
+            '--force'    => true,
         ]));
 
         if ($this->input->getOption('seed')) {
             $this->call('seed:run', array_filter([
                 '--database' => $this->database,
-                '--seed' => $this->input->getOption('seeder'),
-                '--force' => true,
+                '--seed'     => $this->input->getOption('seeder'),
+                '--force'    => true,
             ]));
         }
 
@@ -87,8 +78,8 @@ class FreshMigration extends AbstractCommand
     protected function dropAllViews()
     {
         $this->getDb()->connection($this->database)
-                    ->getSchemaBuilder()
-                    ->dropAllViews();
+            ->getSchemaBuilder()
+            ->dropAllViews();
     }
     /**
      * Drop all database types.
@@ -98,7 +89,7 @@ class FreshMigration extends AbstractCommand
     protected function dropAllTypes()
     {
         $this->getDb()->connection($this->database)
-                    ->getSchemaBuilder()
-                    ->dropAllTypes();
+            ->getSchemaBuilder()
+            ->dropAllTypes();
     }
 }

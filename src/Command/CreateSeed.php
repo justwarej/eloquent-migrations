@@ -1,17 +1,17 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 
-#[AsCommand('seed:create')]
 class CreateSeed extends AbstractCommand
 {
-    protected DatabaseMigrationRepository $repository;
+    /**
+     * @var DatabaseMigrationRepository
+     */
+    protected $repository;
 
     protected function configure()
     {
@@ -27,7 +27,7 @@ class CreateSeed extends AbstractCommand
     {
         $this->bootstrap($input, $output);
         $className = $this->getClassName();
-        $path = $this->getSeederPath($className);
+        $path      = $this->getSeederPath($className);
 
         $contents = file_get_contents(__DIR__ . '/../../data/Seeder.php.dist');
         if ($contents === false) {
@@ -52,7 +52,7 @@ class CreateSeed extends AbstractCommand
     {
         $className = (string) $this->input->getArgument('name');
 
-        if (!preg_match('/^[A-Z][a-zA-Z0-9]*$/', $className)) {
+        if (! preg_match('/^[A-Z][a-zA-Z0-9]*$/', $className)) {
             throw new \InvalidArgumentException(sprintf(
                 'This seeder name is not a valid PHP CamelCase Class name: %s',
                 $className

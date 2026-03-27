@@ -1,5 +1,4 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Seeds;
 
 use Illuminate\Database\Connection;
@@ -9,8 +8,10 @@ abstract class Seeder
 {
     /**
      * Enables, if supported, wrapping the migration within a transaction.
+     *
+     * @var bool
      */
-    public bool $withinTransaction = true;
+    public $withinTransaction = true;
 
     /**
      * Return array of Seeds that needs to be run before
@@ -22,7 +23,10 @@ abstract class Seeder
         return [];
     }
 
-    private Connection $db;
+    /**
+     * @var Connection
+     */
+    private $db;
 
     public function setDb(Connection $db): void
     {

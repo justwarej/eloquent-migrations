@@ -1,25 +1,41 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Closure;
 use Illuminate\Database\DatabaseManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractCommand extends Command
 {
-    protected string $configFile;
-    protected array $config;
-    protected InputInterface $input;
-    protected OutputInterface $output;
-    protected string $environment;
-    protected ?string $database;
+    /**
+     * @var string
+     */
+    protected $configFile;
+    /**
+     * @var array
+     */
+    protected $config;
+    /**
+     * @var InputInterface
+     */
+    protected $input;
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+    /**
+     * @var string
+     */
+    protected $environment;
+    /**
+     * @var string|null
+     */
+    protected $database;
 
     protected function configure()
     {
@@ -30,20 +46,20 @@ abstract class AbstractCommand extends Command
 
     protected function bootstrap(InputInterface $input, OutputInterface $output): void
     {
-        $this->input = $input;
+        $this->input  = $input;
         $this->output = $output;
         $this->loadConfig($input);
     }
 
     protected function loadConfig(InputInterface $input): void
     {
-        $this->configFile = (string)$input->getOption('config');
+        $this->configFile = (string) $input->getOption('config');
 
         $pathConfigFile = getcwd() . DIRECTORY_SEPARATOR . $this->configFile;
 
-        $this->config = file_exists($pathConfigFile) ? require $pathConfigFile : (isset($_ENV['ELMIGRATOR_CONFIG']) ? require getcwd() . DIRECTORY_SEPARATOR . $_ENV['ELMIGRATOR_CONFIG'] : null);
+        $this->config      = file_exists($pathConfigFile) ? require $pathConfigFile : (isset($_ENV['ELMIGRATOR_CONFIG']) ? require getcwd() . DIRECTORY_SEPARATOR . $_ENV['ELMIGRATOR_CONFIG'] : null);
         $this->environment = $input->getOption('env') ?? $this->config['default_environment'];
-        $this->database = $input->getOption('database') ?? $this->config['database'] ?? null;
+        $this->database    = $input->getOption('database') ?? $this->config['database'] ?? null;
 
         if ($this->configFile === null) {
             $this->output->writeln('<danger>could not find nothing configuration a file. Set throught --config option or environment variable ELMIGRATOR_CONFIG</danger>');
@@ -52,12 +68,12 @@ abstract class AbstractCommand extends Command
 
     protected function getMigrationPath(): string
     {
-        return (string)$this->config['paths']['migrations'];
+        return (string) $this->config['paths']['migrations'];
     }
 
     protected function getSeedPath(): string
     {
-        return (string)$this->config['paths']['seeds'];
+        return (string) $this->config['paths']['seeds'];
     }
 
     protected function getDb(): DatabaseManager
@@ -72,7 +88,7 @@ abstract class AbstractCommand extends Command
 
     protected function getMigrationTable(): string
     {
-        return (string)$this->config['migration_table'];
+        return (string) $this->config['migration_table'];
     }
 
     protected function table(array $headers, array $contents)
@@ -85,10 +101,10 @@ abstract class AbstractCommand extends Command
 
     public function confirm(string $message): bool
     {
-        $helper = $this->getHelper('question');
+        $helper   = $this->getHelper('question');
         $question = new ConfirmationQuestion($message, false);
 
-        if (!$helper->ask($this->input, $this->output, $question)) {
+        if (! $helper->ask($this->input, $this->output, $question)) {
             return false;
         }
         return true;
@@ -105,7 +121,7 @@ abstract class AbstractCommand extends Command
      */
     public function confirmToProceed(string $warning = 'Application In Production!', $callback = null): bool
     {
-        $callback = is_null($callback) ? $this->getDefaultConfirmCallback() : $callback;
+        $callback      = is_null($callback) ? $this->getDefaultConfirmCallback() : $callback;
         $shouldConfirm = $callback instanceof Closure ? call_user_func($callback) : $callback;
         if ($shouldConfirm) {
             if ($this->input->hasOption('force') && $this->input->getOption('force')) {
@@ -142,7 +158,7 @@ abstract class AbstractCommand extends Command
      */
     public function call(string $command, array $arguments = []): int
     {
-        $arguments['command'] = $command;
+        $arguments['command']  = $command;
         $arguments['--config'] = $this->configFile;
         return $this->getApplication()->find($command)->run(
             new ArrayInput($arguments),

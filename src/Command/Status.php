@@ -1,21 +1,24 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Illuminate\Support\Collection;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Hyde1\EloquentMigrations\Migrations\Migrator;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Illuminate\Database\Migrations\Migrator as BaseMigrator;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('status')]
 class Status extends AbstractCommand
 {
-    protected BaseMigrator $migrator;
-    protected DatabaseMigrationRepository $repository;
+    /**
+     * @var BaseMigrator
+     */
+    protected $migrator;
+    /**
+     * @var DatabaseMigrationRepository
+     */
+    protected $repository;
 
     protected function configure()
     {
@@ -30,14 +33,14 @@ class Status extends AbstractCommand
     {
         $this->bootstrap($input, $output);
         $this->repository = new DatabaseMigrationRepository($this->getDb(), $this->getMigrationTable());
-        $this->migrator = new Migrator($this->repository, $this->getDb(), new Filesystem());
+        $this->migrator   = new Migrator($this->repository, $this->getDb(), new Filesystem());
         $this->migrator->setOutput($output);
 
         if (! $this->migrator->repositoryExists()) {
             throw new \RuntimeException('The migration table is not installed');
         }
 
-        $ran = $this->migrator->getRepository()->getRan();
+        $ran     = $this->migrator->getRepository()->getRan();
         $batches = $this->migrator->getRepository()->getMigrationBatches();
         if (count($migrations = $this->getStatusFor($ran, $batches)) > 0) {
             $this->table(['Ran?', 'Migration', 'Batch'], $migrations->toArray());

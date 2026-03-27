@@ -1,22 +1,25 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Illuminate\Console\OutputStyle;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Hyde1\EloquentMigrations\Migrations\Migrator;
+use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Illuminate\Database\Migrations\Migrator as BaseMigrator;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('migrate')]
 class Migrate extends AbstractCommand
 {
-    protected BaseMigrator $migrator;
-    protected DatabaseMigrationRepository $repository;
+    /**
+     * @var BaseMigrator
+     */
+    protected $migrator;
+    /**
+     * @var DatabaseMigrationRepository
+     */
+    protected $repository;
 
     protected function configure()
     {
@@ -39,7 +42,7 @@ class Migrate extends AbstractCommand
         }
 
         $this->repository = new DatabaseMigrationRepository($this->getDb(), $this->getMigrationTable());
-        $this->migrator = new Migrator($this->repository, $this->getDb(), new Filesystem());
+        $this->migrator   = new Migrator($this->repository, $this->getDb(), new Filesystem());
         $this->migrator->setOutput($output);
 
         $this->migrator->usingConnection($this->database, function () use ($output, $input) {
@@ -51,7 +54,7 @@ class Migrate extends AbstractCommand
             $this->migrator->setOutput(new OutputStyle($input, $output))
                 ->run([$this->getMigrationPath()], [
                     'pretend' => $this->input->getOption('dry-run'),
-                    'step' => (int)$this->input->getOption('step'),
+                    'step'    => (int) $this->input->getOption('step'),
                 ]);
         });
 

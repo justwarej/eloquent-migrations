@@ -1,21 +1,20 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
 use Illuminate\Database\Console\Migrations\TableGuesser;
-use Illuminate\Database\Migrations\MigrationCreator;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('create')]
 class CreateMigration extends AbstractCommand
 {
-    protected MigrationCreator $creator;
+    /**
+     * @var MigrationCreator
+     */
+    protected $creator;
 
     protected function configure()
     {
@@ -35,11 +34,11 @@ class CreateMigration extends AbstractCommand
     {
         $this->bootstrap($input, $output);
 
-        $name = Str::snake(trim($this->input->getArgument('name')));
-        $table = $this->input->getOption('table');
+        $name   = Str::snake(trim($this->input->getArgument('name')));
+        $table  = $this->input->getOption('table');
         $create = $this->input->getOption('create') ?: false;
         if (! $table && is_string($create)) {
-            $table = $create;
+            $table  = $create;
             $create = true;
         }
         if (! $table) {

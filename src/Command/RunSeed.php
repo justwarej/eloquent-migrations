@@ -1,15 +1,12 @@
 <?php
-
 namespace Hyde1\EloquentMigrations\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Database\Eloquent\Model;
 use Hyde1\EloquentMigrations\Seeds\Seeder;
+use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('seed:run')]
 class RunSeed extends AbstractCommand
 {
     public const SEEDERS_NAMESPACE = 'Database\\Seeders\\';
@@ -28,7 +25,7 @@ class RunSeed extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->bootstrap($input, $output);
-        if (!$this->confirmToProceed()) {
+        if (! $this->confirmToProceed()) {
             return 1;
         }
 
@@ -78,7 +75,7 @@ class RunSeed extends AbstractCommand
         $seeder->setDb($db);
         $this->output->writeln("<info>" . $seeder->getName() . "</info> seeding");
         $start = microtime(true);
-        if (!$seeder->withinTransaction) {
+        if (! $seeder->withinTransaction) {
             $seeder->run();
         } else {
             $db->transaction(function () use ($seeder) {
@@ -89,7 +86,10 @@ class RunSeed extends AbstractCommand
         $this->output->writeln("<info>" . $seeder->getName() . "</info> seeded" . sprintf('%.4fs', $end - $start));
     }
 
-    private ?array $seeds = null;
+    /**
+     * @var array|null
+     */
+    private $seeds = null;
     private function getSeeds(): array
     {
         if ($this->seeds === null) {
@@ -101,7 +101,7 @@ class RunSeed extends AbstractCommand
 
                 require_once $file;
 
-                if (!class_exists($className)) {
+                if (! class_exists($className)) {
                     throw new \InvalidArgumentException(sprintf(
                         'Could not find class "%s" in file "%s"',
                         $className,
@@ -110,7 +110,7 @@ class RunSeed extends AbstractCommand
                 }
 
                 $seed = new $className();
-                if (!($seed instanceof Seeder)) {
+                if (! ($seed instanceof Seeder)) {
                     throw new \InvalidArgumentException(sprintf(
                         'The class "%s" in file "%s" must extend \Hyde1\EloquentMigrations\Seeds\Seeder',
                         $className,
@@ -138,10 +138,10 @@ class RunSeed extends AbstractCommand
     {
         $orderedSeeds = [];
         foreach ($seeds as $seed) {
-            $key = get_class($seed);
-            $dependencies = $this->getSeedDependenciesInstances($seed);
+            $key                = get_class($seed);
+            $dependencies       = $this->getSeedDependenciesInstances($seed);
             $orderedSeeds[$key] = $seed;
-            if (!empty($dependencies)) {
+            if (! empty($dependencies)) {
                 $orderedSeeds = array_merge($this->orderSeedsByDependencies($dependencies), $orderedSeeds);
             }
         }
@@ -154,7 +154,7 @@ class RunSeed extends AbstractCommand
         $dependenciesInstances = [];
 
         $dependencies = $seed->getDependencies();
-        if (!empty($dependencies)) {
+        if (! empty($dependencies)) {
             foreach ($dependencies as $dependency) {
                 foreach ($this->seeds as $seed) {
                     if (get_class($seed) === $dependency) {
