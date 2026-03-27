@@ -2,14 +2,13 @@
 
 namespace Hyde1\EloquentMigrations\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use RuntimeException;
 
-#[AsCommand('init')]
 class Init extends Command
 {
     protected function configure()
