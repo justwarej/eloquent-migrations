@@ -54,6 +54,10 @@ class RunSeed extends AbstractCommand
 
     protected function runSeed($seed = null)
     {
+        if ($seed !== null && strpos($seed, '\\') === false) {
+            $seed = self::SEEDERS_NAMESPACE . $seed;
+        }
+
         $seeds = $this->getSeeds();
 
         if ($seed === null) {
